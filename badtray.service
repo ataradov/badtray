@@ -1,0 +1,13 @@
+[Unit]
+Description=Badtray Service
+After=network.target
+
+[Service]
+User=www-data
+Restart=always
+WorkingDirectory=/home/admin/badtray
+ExecStart=/home/admin/badtray/badtray.py
+
+[Install]
+WantedBy=multi-user.target
+
