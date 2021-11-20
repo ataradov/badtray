@@ -5,15 +5,19 @@ import os
 import time
 import http.server
 import socketserver
+import configparser
 
 # curl -T test.bin -utest:12345 http://127.0.0.1:12345/test/1/test-linux.bin
 
 #------------------------------------------------------------------------------
-PORT       = 12345
-AUTH       = 'Basic dGVzdDoxMjM0NQ=='
-PATH       = '/var/www/bin'
-VPATH      = '/bin'
-MAX_SIZE   = 1*1024*1024
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+PORT       = eval(config['main']['port'])
+AUTH       = config['main']['auth']
+PATH       = config['main']['path']
+VPATH      = config['main']['vpath']
+MAX_SIZE   = eval(config['main']['max_size'])
 
 #------------------------------------------------------------------------------
 STYLE = [
@@ -198,6 +202,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 #------------------------------------------------------------------------------
 socketserver.TCPServer.allow_reuse_address = True
 
+print('Serving on port %d' % PORT)
 httpd = socketserver.TCPServer(('', PORT), CustomHTTPRequestHandler)
 httpd.serve_forever()
 
