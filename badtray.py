@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) 2021, Alex Taradov <alex@taradov.com>. All rights reserved.
+import html
 import os
 import time
 import http.server
@@ -45,7 +46,7 @@ def build_file_index(name):
     '<html lang=en>',
     '<head>',
     '<meta charset=utf-8>',
-    '<title>Binaries for %s</title>' % name,
+    '<title>Binaries for %s</title>' % html.escape(name),
     '\n'.join(STYLE),
     '</head>',
     '<body>',
@@ -62,9 +63,9 @@ def build_file_index(name):
     files = os.listdir(dir_path)
     files.sort()
 
-    files_str = ''.join(['<a href="%s">[%s]</a>&emsp;' % (os.path.join(VPATH, name, d, f), f) for f in files])
+    files_str = ''.join(['<a href="%s">[%s]</a>&emsp;' % (html.escape(os.path.join(VPATH, name, d, f)), html.escape(f)) for f in files])
 
-    text += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (d, last_mod, files_str)]
+    text += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (html.escape(d), html.escape(last_mod), files_str)]
 
   text += [
     '</table>'
@@ -102,7 +103,7 @@ def build_index():
   ]
 
   for d in dir_list:
-    text += ['<li><a href="%s">%s</a></li>' % (os.path.join(VPATH, d), d)]
+    text += ['<li><a href="%s">%s</a></li>' % (html.escape(os.path.join(VPATH, d)), html.escape(d))]
 
   text += [
     '</ul>',
