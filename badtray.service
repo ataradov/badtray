@@ -7,6 +7,7 @@ User=www-data
 Restart=always
 WorkingDirectory=/home/admin/badtray
 ExecStart=/home/admin/badtray/badtray.py
+RuntimeMaxSec=3600
 
 [Install]
 WantedBy=multi-user.target
